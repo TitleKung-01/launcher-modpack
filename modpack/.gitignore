@@ -1,5 +1,5 @@
 ## Keep the repo light: release binary packs via GitHub Releases.
-## Track only small config + docs in git.
+## Track only docs in git.
 
 # Mods are large binaries
 mods/**
@@ -12,15 +12,10 @@ shaderpacks/**
 resourcepacks/**
 !resourcepacks/.gitkeep
 
+# Config can contain personal / machine-specific settings.
+config/**
+!config/.gitkeep
+
 # Common noise
 **/*.bak
 **/*.log
-
-# Config caches / per-world / personal data (avoid committing)
-config/**/.puzzle_cache/
-config/**/world/
-config/**/worlds/
-config/**/tmp*/
-config/**/imgui.ini
-config/**/username-cache.json
-config/**/voicechat/username-cache.json
