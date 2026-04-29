@@ -172,14 +172,37 @@ function normalizeExtractedModpackRoot(extractDir) {
   // - extractDir/<pack-folders>
   // - extractDir/<something>/<pack-folders>
   const packFolders = ['mods', 'config', 'shaderpacks', 'resourcepacks'];
-  const directHasAny = packFolders.some((name) => fs.existsSync(path.join(extractDir, name)));
-  if (directHasAny) return extractDir;
+  const rootDirents = fs.readdirSync(extractDir, { withFileTypes: true });
+  const rootDirs = rootDirents.filter((e) => e.isDirectory());
+  const rootFiles = rootDirents.filter((e) => e.isFile());
+  const rootPresent = packFolders.filter((name) => fs.existsSync(path.join(extractDir, name)));
 
-  const entries = fs.readdirSync(extractDir, { withFileTypes: true }).filter((e) => e.isDirectory());
-  if (entries.length !== 1) return extractDir;
-  const nested = path.join(extractDir, entries[0].name);
-  const nestedHasAny = packFolders.some((name) => fs.existsSync(path.join(nested, name)));
-  if (nestedHasAny) return nested;
+  // If there are real files at the root, keep it (pack is probably already in the right place).
+  if (rootFiles.length > 0) return extractDir;
+
+  // If root contains multiple pack folders, it is the pack root.
+  if (rootPresent.length >= 2) return extractDir;
+
+  // If root contains exactly one pack folder AND also exactly one directory total,
+  // treat it as a wrapper folder and try to detect the actual pack inside.
+  if (rootDirs.length === 1) {
+    const nested = path.join(extractDir, rootDirs[0].name);
+    try {
+      const nestedPresent = packFolders.filter((name) => fs.existsSync(path.join(nested, name)));
+      if (nestedPresent.length >= 2) return nested;
+      // Also accept a nested pack if it contains any pack folder AND the root only had a single pack folder.
+      if (nestedPresent.length >= 1 && rootPresent.length === 1) return nested;
+    } catch (_error) {
+      // ignore and fallback
+    }
+  }
+
+  // If root contains any pack folder (even one), assume it's the pack root.
+  if (rootPresent.length >= 1) return extractDir;
+
+  // Otherwise, if root has a single directory, we can attempt to use it as pack root.
+  if (rootDirs.length === 1) return path.join(extractDir, rootDirs[0].name);
+
   return extractDir;
 }
 
