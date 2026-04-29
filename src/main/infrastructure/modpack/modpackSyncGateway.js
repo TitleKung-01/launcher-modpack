@@ -157,13 +157,25 @@ function writeModListFile({ sourceModsDir, launcherRoot, modListFileName }) {
 
 function createModpackSyncGateway() {
   return {
-    syncModpack({ launcherRoot, sourceRoot, modsFolderName, configFolderName, modListFileName }) {
+    syncModpack({
+      launcherRoot,
+      sourceRoot,
+      modsFolderName,
+      configFolderName,
+      shaderpacksFolderName,
+      resourcepacksFolderName,
+      modListFileName
+    }) {
       ensureDirectoryForSync(launcherRoot);
 
       const sourceModsDir = path.join(sourceRoot, modsFolderName);
       const sourceConfigDir = path.join(sourceRoot, configFolderName);
+      const sourceShaderpacksDir = shaderpacksFolderName ? path.join(sourceRoot, shaderpacksFolderName) : null;
+      const sourceResourcepacksDir = resourcepacksFolderName ? path.join(sourceRoot, resourcepacksFolderName) : null;
       const targetModsDir = path.join(launcherRoot, modsFolderName);
       const targetConfigDir = path.join(launcherRoot, configFolderName);
+      const targetShaderpacksDir = shaderpacksFolderName ? path.join(launcherRoot, shaderpacksFolderName) : null;
+      const targetResourcepacksDir = resourcepacksFolderName ? path.join(launcherRoot, resourcepacksFolderName) : null;
 
       const modsResult = syncDirectory({
         sourceDir: sourceModsDir,
@@ -173,6 +185,14 @@ function createModpackSyncGateway() {
         sourceDir: sourceConfigDir,
         targetDir: targetConfigDir
       });
+      const shaderpacksResult =
+        sourceShaderpacksDir && targetShaderpacksDir
+          ? syncDirectory({ sourceDir: sourceShaderpacksDir, targetDir: targetShaderpacksDir })
+          : { copied: 0, removed: 0 };
+      const resourcepacksResult =
+        sourceResourcepacksDir && targetResourcepacksDir
+          ? syncDirectory({ sourceDir: sourceResourcepacksDir, targetDir: targetResourcepacksDir })
+          : { copied: 0, removed: 0 };
       const modListResult = writeModListFile({
         sourceModsDir,
         launcherRoot,
@@ -182,6 +202,8 @@ function createModpackSyncGateway() {
       return {
         mods: modsResult,
         config: configResult,
+        shaderpacks: shaderpacksResult,
+        resourcepacks: resourcepacksResult,
         modList: modListResult
       };
     }

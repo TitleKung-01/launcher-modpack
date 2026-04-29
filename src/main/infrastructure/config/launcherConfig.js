@@ -15,6 +15,8 @@ const launcherConfig = {
     sourceRoot: path.resolve(__dirname, '../../../../modpack'),
     modsFolderName: 'mods',
     configFolderName: 'config',
+    shaderpacksFolderName: 'shaderpacks',
+    resourcepacksFolderName: 'resourcepacks',
     modListFileName: 'mod-list.json',
     githubReleases: {
       // ตั้งค่าให้เป็น repo ที่คุณปล่อย Release ไว้

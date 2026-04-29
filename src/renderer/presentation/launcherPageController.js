@@ -7,6 +7,7 @@ function createLauncherPageController({ electronAPI, dom, alertApi }) {
   let loadingResetTimer = null;
   let currentGameState = 'idle';
   let statePollInterval = null;
+  let modpackUpdateInProgress = false;
 
   function showToast(message, tone) {
     alertApi(message, tone);
@@ -28,6 +29,13 @@ function createLauncherPageController({ electronAPI, dom, alertApi }) {
   function setButtonLoading(button, isLoading) {
     button.classList.toggle('loading', isLoading);
     button.disabled = isLoading;
+  }
+
+  function setModpackUpdateButtonLoading(isLoading) {
+    if (!dom.updateModpackButton) return;
+    setButtonLoading(dom.updateModpackButton, isLoading);
+    dom.updateModpackButton.innerText = isLoading ? 'กำลังอัปเดต...' : 'อัปเดตม็อดแพ็ก';
+    dom.updateModpackButton.textContent = dom.updateModpackButton.innerText;
   }
 
   function setPlayButtonLoading(isLoading) {
@@ -182,6 +190,8 @@ function createLauncherPageController({ electronAPI, dom, alertApi }) {
 
       try {
         if (api && typeof api.ensureModpackUpdated === 'function') {
+          modpackUpdateInProgress = true;
+          setModpackUpdateButtonLoading(true);
           const result = await api.ensureModpackUpdated();
           if (result && result.ok === false) {
             // Don't hard-block launch; allow fallback to bundled modpack when configured.
@@ -192,6 +202,9 @@ function createLauncherPageController({ electronAPI, dom, alertApi }) {
         }
       } catch (_error) {
         setStatus('อัปเดตม็อดแพ็กไม่สำเร็จ (จะใช้ไฟล์ที่มีอยู่)', 'warn');
+      } finally {
+        modpackUpdateInProgress = false;
+        setModpackUpdateButtonLoading(false);
       }
 
       requestAnimationFrame(() => {
@@ -224,6 +237,47 @@ function createLauncherPageController({ electronAPI, dom, alertApi }) {
       } finally {
         setButtonLoading(dom.installJavaButton, false);
         await refreshJavaState();
+      }
+    });
+  }
+
+  function bindUpdateModpackButton() {
+    if (!dom.updateModpackButton) return;
+    dom.updateModpackButton.addEventListener('click', async () => {
+      if (!api || typeof api.ensureModpackUpdated !== 'function') {
+        showToast('ฟังก์ชันอัปเดตม็อดแพ็กยังไม่พร้อม', 'error');
+        return;
+      }
+      if (modpackUpdateInProgress) return;
+      if (currentGameState === 'running' || currentGameState === 'launching') {
+        showToast('เกมกำลังเปิดอยู่ ไม่สามารถอัปเดตได้', 'warn');
+        return;
+      }
+
+      try {
+        modpackUpdateInProgress = true;
+        setModpackUpdateButtonLoading(true);
+        setStatus('กำลังตรวจสอบ/อัปเดตม็อดแพ็ก...', 'warn');
+        setProgress(3);
+        const result = await api.ensureModpackUpdated();
+        if (result && result.ok) {
+          const message = result.updated
+            ? `อัปเดตม็อดแพ็กสำเร็จ${result.tag ? ` (${result.tag})` : ''}`
+            : `ม็อดแพ็กเป็นเวอร์ชันล่าสุดแล้ว${result.tag ? ` (${result.tag})` : ''}`;
+          setStatus(message, 'ok');
+          showToast(message, 'ok');
+        } else {
+          const message = (result && result.message) || 'อัปเดตม็อดแพ็กไม่สำเร็จ';
+          setStatus(message, 'error');
+          showToast(message, 'error');
+        }
+      } catch (_error) {
+        const message = 'อัปเดตม็อดแพ็กไม่สำเร็จ';
+        setStatus(message, 'error');
+        showToast(message, 'error');
+      } finally {
+        modpackUpdateInProgress = false;
+        setModpackUpdateButtonLoading(false);
       }
     });
   }
@@ -401,6 +455,7 @@ function createLauncherPageController({ electronAPI, dom, alertApi }) {
       api.subscribeGameState();
     }
     bindPlayButton();
+    bindUpdateModpackButton();
     bindInstallJavaButton();
     bindLaunchErrorListener();
     bindLaunchStartedListener();

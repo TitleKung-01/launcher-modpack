@@ -22,6 +22,7 @@ const controller = window.createLauncherPageController({
   electronAPI: window.electronAPI,
   dom: {
     playButton: document.getElementById('play-btn'),
+    updateModpackButton: document.getElementById('update-modpack-btn'),
     installJavaButton: document.getElementById('install-java-btn'),
     usernameInput: document.getElementById('username'),
     statusText: document.getElementById('status-text'),

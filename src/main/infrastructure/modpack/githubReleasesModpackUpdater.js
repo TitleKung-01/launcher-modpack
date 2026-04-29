@@ -169,18 +169,17 @@ function extractZip(zipPath, targetDir) {
 
 function normalizeExtractedModpackRoot(extractDir) {
   // Supports either:
-  // - extractDir/mods, extractDir/config
-  // - extractDir/<something>/mods, extractDir/<something>/config
-  const directHasMods = fs.existsSync(path.join(extractDir, 'mods'));
-  const directHasConfig = fs.existsSync(path.join(extractDir, 'config'));
-  if (directHasMods || directHasConfig) return extractDir;
+  // - extractDir/<pack-folders>
+  // - extractDir/<something>/<pack-folders>
+  const packFolders = ['mods', 'config', 'shaderpacks', 'resourcepacks'];
+  const directHasAny = packFolders.some((name) => fs.existsSync(path.join(extractDir, name)));
+  if (directHasAny) return extractDir;
 
   const entries = fs.readdirSync(extractDir, { withFileTypes: true }).filter((e) => e.isDirectory());
   if (entries.length !== 1) return extractDir;
   const nested = path.join(extractDir, entries[0].name);
-  const nestedHasMods = fs.existsSync(path.join(nested, 'mods'));
-  const nestedHasConfig = fs.existsSync(path.join(nested, 'config'));
-  if (nestedHasMods || nestedHasConfig) return nested;
+  const nestedHasAny = packFolders.some((name) => fs.existsSync(path.join(nested, name)));
+  if (nestedHasAny) return nested;
   return extractDir;
 }
 

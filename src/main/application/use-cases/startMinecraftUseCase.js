@@ -45,6 +45,8 @@ function createStartMinecraftUseCase({ javaGateway, minecraftGateway }) {
         sourceRoot: resolvedSourceRoot,
         modsFolderName: launcherConfig.modpack.modsFolderName,
         configFolderName: launcherConfig.modpack.configFolderName,
+        shaderpacksFolderName: launcherConfig.modpack.shaderpacksFolderName,
+        resourcepacksFolderName: launcherConfig.modpack.resourcepacksFolderName,
         modListFileName: launcherConfig.modpack.modListFileName
       });
 
