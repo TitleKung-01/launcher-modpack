@@ -43,6 +43,36 @@ function downloadBuffer(url) {
   });
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryableNetworkError(error) {
+  const code = error && error.code ? String(error.code) : '';
+  return (
+    code === 'EAI_AGAIN' ||
+    code === 'ECONNRESET' ||
+    code === 'ETIMEDOUT' ||
+    code === 'ENOTFOUND' ||
+    code === 'ECONNREFUSED'
+  );
+}
+
+async function downloadBufferWithRetry(url, { retries = 6, baseDelayMs = 600 } = {}) {
+  let attempt = 0;
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    try {
+      return await downloadBuffer(url);
+    } catch (error) {
+      if (attempt >= retries || !isRetryableNetworkError(error)) throw error;
+      const backoff = Math.min(8000, baseDelayMs * 2 ** attempt);
+      attempt += 1;
+      await sleep(backoff);
+    }
+  }
+}
+
 function ensureDirectory(dirPath) {
   if (fs.existsSync(dirPath)) {
     const stat = fs.statSync(dirPath);
@@ -106,7 +136,7 @@ async function ensureFabricProfileInstalled({ launcherRoot, customId }) {
     parsed.gameVersion
   )}/${encodeURIComponent(parsed.loaderVersion)}/profile/zip`;
 
-  const zipBuffer = await downloadBuffer(zipUrl);
+  const zipBuffer = await downloadBufferWithRetry(zipUrl);
   const zip = new AdmZip(zipBuffer);
   // Fabric profile zip contains a top-level folder named after the customId
   // e.g. fabric-loader-x.y.z-mcver/fabric-loader-x.y.z-mcver.json

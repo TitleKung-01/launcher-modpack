@@ -125,6 +125,13 @@ function syncDirectory({ sourceDir, targetDir }) {
 
 function writeModListFile({ sourceModsDir, launcherRoot, modListFileName }) {
   const modFiles = collectFiles(sourceModsDir)
+    .filter((filePath) => {
+      const name = path.basename(filePath).toLowerCase();
+      // Hide server-managed/auto-sync wrappers from the mod list shown to players.
+      if (name.includes('automodpack')) return false;
+      if (name.includes('automodpack_mod')) return false;
+      return true;
+    })
     .map((filePath) => {
       const stat = fs.statSync(filePath);
       return {

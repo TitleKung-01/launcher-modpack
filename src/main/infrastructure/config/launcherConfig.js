@@ -12,7 +12,7 @@ const launcherConfig = {
     min: '4G'
   },
   modpack: {
-    sourceRoot: path.resolve(__dirname, '../../../../modpack'),
+    sourceRoot: path.resolve(__dirname, '../../../modpack'),
     modsFolderName: 'mods',
     configFolderName: 'config',
     shaderpacksFolderName: 'shaderpacks',

@@ -29,6 +29,36 @@ function downloadBuffer(url) {
   });
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryableNetworkError(error) {
+  const code = error && error.code ? String(error.code) : '';
+  return (
+    code === 'EAI_AGAIN' ||
+    code === 'ECONNRESET' ||
+    code === 'ETIMEDOUT' ||
+    code === 'ENOTFOUND' ||
+    code === 'ECONNREFUSED'
+  );
+}
+
+async function downloadBufferWithRetry(url, { retries = 6, baseDelayMs = 600 } = {}) {
+  let attempt = 0;
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    try {
+      return await downloadBuffer(url);
+    } catch (error) {
+      if (attempt >= retries || !isRetryableNetworkError(error)) throw error;
+      const backoff = Math.min(8000, baseDelayMs * 2 ** attempt);
+      attempt += 1;
+      await sleep(backoff);
+    }
+  }
+}
+
 function ensureDirectory(dirPath) {
   if (fs.existsSync(dirPath)) {
     const stat = fs.statSync(dirPath);
@@ -61,7 +91,7 @@ async function ensureVanillaVersionInstalled({ launcherRoot, gameVersion }) {
 
   // Prefer piston-meta (new Mojang endpoints).
   const manifestUrl = 'https://piston-meta.mojang.com/mc/game/version_manifest_v2.json';
-  const manifest = JSON.parse((await downloadBuffer(manifestUrl)).toString('utf8'));
+  const manifest = JSON.parse((await downloadBufferWithRetry(manifestUrl)).toString('utf8'));
   const entry = Array.isArray(manifest.versions)
     ? manifest.versions.find((v) => v && v.id === gameVersion)
     : null;
@@ -73,7 +103,7 @@ async function ensureVanillaVersionInstalled({ launcherRoot, gameVersion }) {
     throw error;
   }
 
-  const versionMeta = JSON.parse((await downloadBuffer(entry.url)).toString('utf8'));
+  const versionMeta = JSON.parse((await downloadBufferWithRetry(entry.url)).toString('utf8'));
   fs.writeFileSync(versionJsonPath, JSON.stringify(versionMeta, null, 2), 'utf8');
 
   const jarUrl =
@@ -91,7 +121,7 @@ async function ensureVanillaVersionInstalled({ launcherRoot, gameVersion }) {
     throw error;
   }
 
-  const jarBuffer = await downloadBuffer(jarUrl);
+  const jarBuffer = await downloadBufferWithRetry(jarUrl);
   fs.writeFileSync(versionJarPath, jarBuffer);
 
   // Validate the jar is a readable zip (guards against HTML error pages / partial downloads)
