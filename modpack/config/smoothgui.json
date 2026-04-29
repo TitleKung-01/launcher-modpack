@@ -1,0 +1,8 @@
+{
+  "enableAnimation": true,
+  "animationTime": 355,
+  "animationScale": 2.05,
+  "fadeBackground": true,
+  "animationStyle": "BACK",
+  "animationDirection": "UP"
+}

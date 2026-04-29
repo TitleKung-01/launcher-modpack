@@ -1,0 +1,133 @@
+{
+  "enabled": true,
+  "outline_size": 10.0,
+  "render_solid": false,
+  "render_solid_outline_color_rgb": [
+    171,
+    96,
+    218
+  ],
+  "render_equipment": false,
+  "equipment_outline_size": 20.0,
+  "render_equipment_solid": true,
+  "item_overrides": {
+    "minecraft:netherite_leggings": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 20.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:enchanted_book": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 0.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:nether_star": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 20.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:netherite_helmet": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 20.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:enchanted_golden_apple": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 20.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:netherite_boots": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 20.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:experience_bottle": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 20.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:netherite_chestplate": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 20.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": false,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    },
+    "minecraft:trident": {
+      "render": false,
+      "override_outline_size": false,
+      "outline_size": 6.0,
+      "override_render_solid": false,
+      "render_solid": false,
+      "override_render_solid_outline_color": true,
+      "render_solid_outline_color": [
+        210,
+        150,
+        248
+      ]
+    }
+  },
+  "equipment_overrides": {}
+}

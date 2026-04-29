@@ -1,0 +1,66 @@
+{
+	"enabledEffects": {
+		"waterSplash": true,
+		"cascades": true,
+		"waterfallSpray": true,
+		"fireflies": false,
+		"fallingLeaves": false,
+		"caveDust": true,
+		"chestBubbles": true,
+		"soulSandBubbles": true,
+		"barrelBubbles": true,
+		"poppingBubbles": true,
+		"rainRipples": false,
+		"waterDripRipples": false,
+		"cakeEatingParticles": true,
+		"emissiveLavaDrips": true
+	},
+	"advancedSettings": {
+		"fireflySettings": {
+			// Time when fireflies start appearing (0-23999)
+			"startTime": 12000,
+			// Time when fireflies stop appearing (0-23999)
+			"endTime": 23000,
+			"minTemp": 0.5,
+			"maxTemp": 0.9900000095367432,
+			"canSpawnInRain": false,
+			// Daily random frequency modifiers
+			"dailyRandom": [
+				0.0,
+				0.0,
+				0.0,
+				0.33000001311302185,
+				0.6600000262260437,
+				1.0
+			],
+			// Grass spawn frequency (as percentage)
+			"grassPercentage": 17,
+			// Tall grass spawn frequency (as percentage)
+			"tallGrassPercentage": 8,
+			// Flowers spawn frequency (as percentage)
+			"flowersPercentage": 100,
+			// Tall flowers spawn frequency (as percentage)
+			"tallFlowersPercentage": 50
+		},
+		"fallingLeavesSettings": {
+			"spawnChance": 60,
+			"spawnRipples": true,
+			"layFlatOnGround": true,
+			"layFlatRightAngles": false
+		},
+		"caveDustSettings": {
+			"spawnChance": 700,
+			"baseMaxAge": 200,
+			"color": 8421504,
+			"fadeDuration": 20,
+			"maxAcceleration": 0.029999999329447746,
+			"accelChangeChance": 180,
+			// Biomes to exclude from cave dust spawning
+			"excludeBiomes": [
+				"minecraft:lush_caves",
+				"minecraft:dripstone_caves",
+				"minecraft:deep_dark"
+			]
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"disableMod": true,
+	"disabledBiomes": [
+		"minecraft:nether_wastes",
+		"minecraft:crimson_forest",
+		"minecraft:warped_forest",
+		"minecraft:soul_sand_valley",
+		"minecraft:basalt_deltas"
+	],
+	"disableRaininessEffect": true,
+	"disableUndergroundFogMultiplier": true,
+	"disableBiomeFogColour": true,
+	"disableCloudWhitening": true,
+	"initialFogStart": 0.1,
+	"initialFogEnd": 0.85,
+	"raininessTransitionSpeed": 0.005,
+	"undergroundnessTransitionSpeed": 0.005,
+	"fogStartTransitionSpeed": 0.005,
+	"fogEndTransitionSpeed": 0.005,
+	"darknessTransitionSpeed": 0.005,
+	"fogColorTransitionSpeed": 0.025,
+	"startMultiplierTransitionSpeed": 0.0075,
+	"endMultiplierTransitionSpeed": 0.0075,
+	"disableMoonPhaseColorTransition": false,
+	"newMoonColor": -16777216,
+	"disableSunsetFog": false,
+	"enableHighAltitudeFog": true,
+	"prioritizePolytoneFogColors": false,
+	"disableWhenIrisActive": true
+}

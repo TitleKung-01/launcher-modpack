@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "hoverScale": 1.29,
+  "hoverSpeed": 0.4,
+  "pickupAnimation": true,
+  "pickupSpeed": 0.05,
+  "bounce": true,
+  "bounceAmount": 0.08,
+  "bounceDurationMs": 100
+}

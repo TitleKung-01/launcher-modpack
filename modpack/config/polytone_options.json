@@ -1,0 +1,6 @@
+{
+  "polytone:lenient_loading": false,
+  "polytone:legacy_parsing": true,
+  "polytone:particles_throttle": 0.75,
+  "polytone:custom_particles_async": false
+}

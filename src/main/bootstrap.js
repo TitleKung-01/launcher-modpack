@@ -1,4 +1,5 @@
 const { app } = require('electron');
+const dns = require('dns');
 const { createMainWindow } = require('./presentation/window/createMainWindow');
 const { registerLauncherIpc } = require('./presentation/ipc/registerLauncherIpc');
 const javaGateway = require('./infrastructure/system/javaGateway');
@@ -18,6 +19,16 @@ const startMinecraftUseCase = createStartMinecraftUseCase({
 });
 
 function bootstrapMainProcess() {
+  // Mitigates intermittent "Client network socket disconnected before secure TLS connection was established"
+  // on some Windows networks when Node prefers IPv6.
+  try {
+    if (typeof dns.setDefaultResultOrder === 'function') {
+      dns.setDefaultResultOrder('ipv4first');
+    }
+  } catch (_error) {
+    // ignore
+  }
+
   app.whenReady().then(() => {
     // Helps Windows pick the right taskbar icon + group.
     app.setAppUserModelId('com.mryos.launchermodpack');

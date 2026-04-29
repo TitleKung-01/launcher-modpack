@@ -1,0 +1,4 @@
+{
+	renderCustomArrowEntity: true,
+	ignoredItems: []
+}

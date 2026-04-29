@@ -1,0 +1,7 @@
+{
+  "enableSmoothF5": true,
+  "enablePosSmoothing": true,
+  "enableRotSmoothing": true,
+  "posStiffness": 0.3,
+  "rotStiffness": 0.7
+}

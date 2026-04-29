@@ -1,0 +1,21 @@
+{
+  "itemSpecific": {
+    "minecraft:lantern": {
+      "transforms": {
+        "right": {
+          "scale": 1.4017045,
+          "offX": 0.125,
+          "offY": -0.5492424,
+          "offZ": -0.17803025,
+          "rotX": 0.3501892,
+          "rotY": 41.322952,
+          "rotZ": -91.05058,
+          "pivotX": -0.03891051,
+          "pivotY": 0.023346305,
+          "pivotZ": -0.060000002,
+          "physics": "FULL_PENDULUM"
+        }
+      }
+    }
+  }
+}
