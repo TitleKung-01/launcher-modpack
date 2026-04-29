@@ -1,0 +1,34 @@
+node_modules/
+
+# Electron / OS junk
+*.log
+*.pid
+.DS_Store
+Thumbs.db
+
+# Local caches / temporary work
+.tmp-*
+tmp/
+temp/
+
+# Build outputs (if added later)
+dist/
+out/
+release/
+
+# Electron Builder / installers
+*.exe
+*.msi
+*.dmg
+*.AppImage
+*.zip
+*.7z
+*.tar.gz
+
+# Modpack safety (don't commit mods jars)
+modpack/mods/
+**/*.jar
+
+# IDE
+.vscode/
+.idea/

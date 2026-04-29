@@ -1,0 +1,64 @@
+{
+  "name": "launcher-modpack",
+  "version": "1.0.0",
+  "description": "launcher-modpack",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "node scripts/patch-tough-cookie.js",
+    "start": "electron .",
+    "prepare:icon": "node scripts/generate-icon.js",
+    "build:win": "npm run prepare:icon && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win nsis",
+    "build:portable": "npm run prepare:icon && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win portable",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "adm-zip": "^0.5.17",
+    "minecraft-launcher-core": "^3.18.2",
+    "punycode": "^2.3.1"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1",
+    "png-to-ico": "^3.0.1"
+  },
+  "build": {
+    "appId": "com.mryos.launchermodpack",
+    "productName": "Launcher Modpack",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "package.json",
+      "build/icon.ico",
+      "src/**/*",
+      "scripts/**/*",
+      "image/**/*",
+      "modpack/**/*"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false,
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

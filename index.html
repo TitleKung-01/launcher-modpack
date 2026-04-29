@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Modpack Launcher</title>
+    <link rel="stylesheet" href="./src/renderer/styles/launcher.css">
+</head>
+<body>
+    <div class="background-glow one"></div>
+    <div class="background-glow two"></div>
+    <main class="screen">
+        <section class="launcher-minimal">
+            <div class="corner-actions">
+                <button id="view-log-btn" class="corner-button" type="button" aria-label="ดู Log">Log</button>
+            </div>
+            <img class="logo-image" src="./image/Logo.png" alt="Launcher Logo">
+            <h1 class="launcher-title">Modpack Launcher</h1>
+
+            <input type="text" id="username" placeholder="ใส่ชื่อผู้เล่น..." />
+
+            <div class="actions">
+                <button id="play-btn">เริ่มเล่นเกม</button>
+                <button id="install-java-btn" style="display:none;">ติดตั้ง Java 21</button>
+            </div>
+
+            <div id="launch-progress-group" class="progress-group hidden">
+                <div class="progress-wrap" aria-label="launch-progress">
+                    <div id="launch-progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="launch-progress-text" class="progress-text">0%</p>
+            </div>
+
+            <p id="status-text" data-tone="warn">รอคำสั่ง...</p>
+        </section>
+    </main>
+    <div id="toast-host" class="toast-host"></div>
+
+    <div id="log-modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Logs">
+        <div class="modal-backdrop" data-modal-close="true"></div>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h2 class="modal-title">Launcher Log</h2>
+                <button id="log-close-btn" class="icon-button" type="button" aria-label="Close">✕</button>
+            </div>
+            <div class="modal-actions">
+                <button id="log-refresh-btn" class="button-secondary" type="button">รีเฟรช</button>
+                <button id="log-copy-btn" class="button-secondary" type="button">คัดลอก</button>
+                <button id="log-clear-btn" class="button-danger" type="button">ล้าง</button>
+            </div>
+            <pre id="log-content" class="log-content" aria-label="log-content"></pre>
+        </div>
+    </div>
+
+    <script src="./src/renderer/presentation/launcherPageController.js"></script>
+    <script src="./renderer.js"></script>
+</body>
+</html>
