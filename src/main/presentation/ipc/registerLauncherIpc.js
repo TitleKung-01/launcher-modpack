@@ -44,7 +44,22 @@ function registerLauncherIpc({ javaUseCases, startMinecraftUseCase, minecraftGat
         assetName: repo ? repo.assetName : 'modpack.zip',
         onProgress: (p) => sendProgress(p)
       });
-      return result;
+      if (!result || !result.ok || !result.remoteRoot) return result;
+
+      // Apply extracted modpack into the actual launcher root now.
+      sendProgress({ phase: 'sync', percent: 92, label: 'กำลังซิงก์ม็อดแพ็กไปที่ตัวเกม...' });
+      const syncResult = minecraftGateway.syncModpack({
+        launcherRoot: launcherConfig.root,
+        sourceRoot: result.remoteRoot,
+        modsFolderName: launcherConfig.modpack.modsFolderName,
+        configFolderName: launcherConfig.modpack.configFolderName,
+        shaderpacksFolderName: launcherConfig.modpack.shaderpacksFolderName,
+        resourcepacksFolderName: launcherConfig.modpack.resourcepacksFolderName,
+        modListFileName: launcherConfig.modpack.modListFileName
+      });
+      sendProgress({ phase: 'done', percent: 100, label: 'ซิงก์ม็อดแพ็กสำเร็จ' });
+
+      return { ...result, applied: true, sync: syncResult };
     } catch (error) {
       const message = error && error.message ? error.message : 'อัปเดตม็อดแพ็กไม่สำเร็จ';
       sendProgress({ phase: 'error', percent: 0, label: message });
