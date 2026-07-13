@@ -9,6 +9,7 @@
     "prepare:icon": "node scripts/generate-icon.js",
     "build:win": "npm run prepare:icon && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win nsis",
     "build:portable": "npm run prepare:icon && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win portable",
+    "build:mac": "npm run prepare:icon && electron-builder --mac",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -50,6 +51,13 @@
       "target": [
         "nsis",
         "portable"
+      ]
+    },
+    "mac": {
+      "icon": "image/Logo.png",
+      "target": [
+        "dmg",
+        "zip"
       ]
     },
     "nsis": {
